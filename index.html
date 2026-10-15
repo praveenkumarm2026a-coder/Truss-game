@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truss - Educational Physics Game</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Top Navigation Header -->
+        <header class="navbar">
+            <div class="brand">
+                <span class="logo-icon">🏗️</span>
+                <div class="brand-text">
+                    <h1>TRUSS PHYSICS</h1>
+                    <span class="tagline">Method of Joints & Structural Analysis</span>
+                </div>
+            </div>
+            
+            <div class="header-team">
+                <span class="team-badge">Group - 2 Team A</span>
+                <button id="btn-team-credits" class="btn-credits-header">👥 Team Credits</button>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="main-container">
+            <!-- Left Canvas Area -->
+            <section class="canvas-section">
+                <div class="canvas-header">
+                    <div class="level-info">
+                        <span id="level-badge" class="badge">Level 1</span>
+                        <h2 id="level-title">The Simple Triangle</h2>
+                    </div>
+                    <div class="hud-stats">
+                        <div class="stat-box">
+                            <span class="stat-label">SCORE</span>
+                            <span id="score-val" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">TIME</span>
+                            <span id="timer-val" class="stat-value">0s</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="canvas-wrapper">
+                    <canvas id="trussCanvas" width="900" height="600"></canvas>
+                    
+                    <!-- Collapse Failure Banner -->
+                    <div id="failure-overlay" class="overlay-card hidden">
+                        <div class="alert-icon">💥</div>
+                        <h2>STRUCTURAL COLLAPSE!</h2>
+                        <p id="failure-msg">Equilibrium violated! Beam members overloaded.</p>
+                        <button id="btn-retry-level" class="btn-primary btn-yellow">🔄 Retry Level</button>
+                    </div>
+
+                    <!-- Level Clear Banner -->
+                    <div id="victory-overlay" class="overlay-card hidden">
+                        <div class="victory-icon">🎉</div>
+                        <h2>LEVEL CLEARED!</h2>
+                        <p id="victory-msg">Truss equilibrium maintained perfectly.</p>
+                        <button id="btn-next-level" class="btn-primary btn-green">Next Level ➔</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Sidebar Controls -->
+            <aside class="sidebar">
+                <div class="panel-card">
+                    <h3>Member Inspector</h3>
+                    <div id="inspector-content">
+                        <p id="selected-member-name" class="member-title">Select a member beam to begin</p>
+                        <p id="selected-member-length" class="sub-text">Length: --</p>
+                    </div>
+
+                    <div class="input-group">
+                        <label>1. Force Magnitude (kN)</label>
+                        <input type="number" id="force-input" step="0.1" placeholder="e.g. 5.83">
+                    </div>
+
+                    <div class="input-group">
+                        <label>2. Stress Type</label>
+                        <div class="toggle-switch">
+                            <button type="button" class="btn-toggle active-t" data-type="Tension">Tension</button>
+                            <button type="button" class="btn-toggle" data-type="Compression">Compression</button>
+                            <button type="button" class="btn-toggle" data-type="Zero">Zero</button>
+                        </div>
+                    </div>
+
+                    <button id="btn-save-member" class="btn-action btn-cyan">Save Member Force</button>
+                </div>
+
+                <div class="panel-card action-card">
+                    <button id="btn-submit-truss" class="btn-submit">⚡ TEST & SUBMIT TRUSS</button>
+                    
+                    <div class="button-row">
+                        <button id="btn-fbd" class="btn-secondary">📐 FBD Joint</button>
+                        <button id="btn-calc" class="btn-secondary">🧮 Calculator</button>
+                    </div>
+                    <button id="btn-guide" class="btn-secondary btn-full">📖 Theory Guide</button>
+                </div>
+
+                <!-- Footer Team Credits Card -->
+                <div class="panel-card creators-card">
+                    <h4>GROUP - 2 TEAM A CREATORS</h4>
+                    <ul class="creators-mini-list">
+                        <li><span>Sriman K V</span> <code>26BMV1003</code></li>
+                        <li><span>Pragespathi V S</span> <code>26BMV1006</code></li>
+                        <li><span>TANWIN V R</span> <code>26BMV1007</code></li>
+                        <li><span>Praveen Kumar M</span> <code>26BMV1023</code></li>
+                    </ul>
+                    <button id="btn-view-all-team" class="btn-text-link">View All 8 Creators ➔</button>
+                </div>
+            </aside>
+        </main>
+
+        <!-- Team Credits Modal -->
+        <div id="modal-team" class="modal-backdrop hidden">
+            <div class="modal-content">
+                <button class="modal-close" data-close="modal-team">✕</button>
+                <div class="modal-header">
+                    <span class="badge yellow">GROUP - 2 TEAM A</span>
+                    <h2>Project Creators & Developers</h2>
+                </div>
+                <div class="team-grid">
+                    <div class="team-card"><span class="num">1</span> <div class="t-info"><strong>Sriman K V</strong><code>26BMV1003</code></div></div>
+                    <div class="team-card"><span class="num">2</span> <div class="t-info"><strong>Pragespathi V S</strong><code>26BMV1006</code></div></div>
+                    <div class="team-card"><span class="num">3</span> <div class="t-info"><strong>TANWIN V R</strong><code>26BMV1007</code></div></div>
+                    <div class="team-card"><span class="num">4</span> <div class="t-info"><strong>Praveen Kumar M</strong><code>26BMV1023</code></div></div>
+                    <div class="team-card"><span class="num">5</span> <div class="t-info"><strong>P. Senthil Velan</strong><code>26BMV1025</code></div></div>
+                    <div class="team-card"><span class="num">6</span> <div class="t-info"><strong>Abhinav</strong><code>26BMV1024</code></div></div>
+                    <div class="team-card"><span class="num">7</span> <div class="t-info"><strong>Veera Sai Ruthwik Karukonda</strong><code>26BMV1004</code></div></div>
+                    <div class="team-card"><span class="num">8</span> <div class="t-info"><strong>Nalla Sai Venkat Sesidher</strong><code>26BMV1008</code></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Free Body Diagram Modal -->
+        <div id="modal-fbd" class="modal-backdrop hidden">
+            <div class="modal-content large">
+                <button class="modal-close" data-close="modal-fbd">✕</button>
+                <h2>Free Body Diagram - Joint Equilibrium</h2>
+                <div id="fbd-body-content" class="fbd-container"></div>
+            </div>
+        </div>
+
+        <!-- Calculator Modal -->
+        <div id="modal-calc" class="modal-backdrop hidden">
+            <div class="modal-content calc-modal">
+                <button class="modal-close" data-close="modal-calc">✕</button>
+                <h2>Engineering Calculator</h2>
+                <input type="text" id="calc-display" readonly value="0">
+                <div class="calc-grid">
+                    <button class="calc-btn" data-val="sin(">sin</button>
+                    <button class="calc-btn" data-val="cos(">cos</button>
+                    <button class="calc-btn" data-val="tan(">tan</button>
+                    <button class="calc-btn btn-red" data-val="C">C</button>
+                    <button class="calc-btn" data-val="sqrt(">√</button>
+                    <button class="calc-btn" data-val="(">(</button>
+                    <button class="calc-btn" data-val=")">)</button>
+                    <button class="calc-btn" data-val="/">/</button>
+                    <button class="calc-btn" data-val="7">7</button>
+                    <button class="calc-btn" data-val="8">8</button>
+                    <button class="calc-btn" data-val="9">9</button>
+                    <button class="calc-btn" data-val="*">*</button>
+                    <button class="calc-btn" data-val="4">4</button>
+                    <button class="calc-btn" data-val="5">5</button>
+                    <button class="calc-btn" data-val="6">6</button>
+                    <button class="calc-btn" data-val="-">-</button>
+                    <button class="calc-btn" data-val="1">1</button>
+                    <button class="calc-btn" data-val="2">2</button>
+                    <button class="calc-btn" data-val="3">3</button>
+                    <button class="calc-btn" data-val="+">+</button>
+                    <button class="calc-btn" data-val="0">0</button>
+                    <button class="calc-btn" data-val=".">.</button>
+                    <button class="calc-btn btn-green span-2" data-val="=">=</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Theory Guide Modal -->
+        <div id="modal-guide" class="modal-backdrop hidden">
+            <div class="modal-content">
+                <button class="modal-close" data-close="modal-guide">✕</button>
+                <h2>Method of Joints - Theory Guide</h2>
+                <div class="guide-text">
+                    <h3>1. Basic Principles</h3>
+                    <p>A truss is in static equilibrium when every joint satisfies <code>Σ Fx = 0</code> and <code>Σ Fy = 0</code>.</p>
+                    <h3>2. Tension vs Compression</h3>
+                    <p><strong>Tension (T):</strong> Pulls AWAY from the pin joint (+ positive).</p>
+                    <p><strong>Compression (C):</strong> Pushes INTO the pin joint (- negative).</p>
+                    <h3>3. Zero-Force Members</h3>
+                    <p>Unloaded joints with 2 non-collinear members or 3 members with 2 collinear carry 0 force.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="physics.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
